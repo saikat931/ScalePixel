@@ -1,0 +1,8 @@
+# ScalePixel - Ephemeral & Local Files Ignore
+storage/temp/*
+!storage/temp/.gitkeep
+!storage/temp/.htaccess
+.env
+*.log
+.DS_Store
+Thumbs.db

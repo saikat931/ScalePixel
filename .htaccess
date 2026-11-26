@@ -1,0 +1,53 @@
+# ScalePixel Enterprise Security & Apache Hardening
+Options -Indexes -MultiViews
+
+# Disable Server Signature to prevent version disclosure
+ServerSignature Off
+
+# 1. Deny access to sensitive files, configs, and hidden directories
+<FilesMatch "^(\.git|\.env|\.htaccess|keys\.json|\.user\.ini|php\.ini|\.bak|\.sql|\.log)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 2. HTTP Security Headers
+<IfModule mod_headers.c>
+    # Remove version disclosure
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+    
+    # Prevent Clickjacking (framing attacks)
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Enable XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Restrict Referrer leakage
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Permissions Policy
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    
+    # CORS (For API endpoints)
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-ScalePixel-Key, X-ScalePixel-Secret, X-API-Key, X-API-Secret"
+</IfModule>
+
+# 3. PHP Environment Hardening
+<IfModule mod_php.c>
+    php_flag display_errors off
+    php_flag log_errors on
+    php_value upload_max_filesize 35M
+    php_value post_max_size 40M
+    php_value memory_limit 256M
+    php_value max_execution_time 60
+</IfModule>

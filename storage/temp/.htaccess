@@ -1,0 +1,28 @@
+# Strict Anti-Execution Lockdown for Ephemeral Image Cache
+# Prevents any PHP, CGI, Perl, ASP script execution even if a polyglot file is present
+
+# 1. Disable PHP engine
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+# 2. Neutralize all script handlers and force static plain-file serving
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .cgi .pl .asp .aspx .sh .bash .py
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .cgi .pl .asp .aspx .sh .bash .py
+SetHandler default-handler
+
+# 3. Prevent MIME-sniffing attacks (browser executing XSS inside SVG/HTML disguised as JPG)
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set Content-Security-Policy "default-src 'none'; sandbox"
+</IfModule>
+
+# 4. Disable Directory Browsing and Script Execution
+Options -Indexes -ExecCGI
+
