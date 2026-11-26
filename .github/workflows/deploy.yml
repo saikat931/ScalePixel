@@ -1,0 +1,34 @@
+name: Deploy ScalePixel to AWS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Deploy to AWS via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USER }}
+        key: ${{ secrets.AWS_SSH_KEY }}
+        port: 22
+        script: |
+          # Navigate to web root
+          cd /var/www/html/ScalePixel || (mkdir -p /var/www/html/ScalePixel && cd /var/www/html/ScalePixel && git clone https://github.com/saikat931/ScalePixel.git .)
+          
+          # Pull latest commits
+          git pull origin main
+          
+          # Ensure correct permissions for temporary image storage
+          sudo chown -R www-data:www-data storage/temp
+          sudo chmod -R 775 storage/temp
+          
+          # Reload web server
+          sudo systemctl reload apache2 || sudo systemctl reload httpd
