@@ -153,7 +153,11 @@ try {
         ScalePixelAuth::recordUsage($auth['source_key'], $result['saved_bytes']);
     }
 
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) === 'on')
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
+    $protocol = $isHttps ? "https://" : "http://";
     $host = $_SERVER['HTTP_HOST'];
     $scriptDir = dirname(dirname(dirname($_SERVER['SCRIPT_NAME'])));
     $scriptDir = rtrim(str_replace('\\', '/', $scriptDir), '/');
