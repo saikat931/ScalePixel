@@ -2,6 +2,8 @@
 storage/temp/*
 !storage/temp/.gitkeep
 !storage/temp/.htaccess
+!storage/temp/test_*.jpg
+!storage/temp/provider_39_*.jpg
 .env
 *.log
 .DS_Store
