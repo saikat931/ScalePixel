@@ -186,13 +186,15 @@ try {
     $scriptDir = rtrim(str_replace('\\', '/', $scriptDir), '/');
     $baseUrl = "{$protocol}{$host}{$scriptDir}";
     $downloadUrl = "{$baseUrl}/storage/temp/{$finalFilename}";
+    $directDownloadUrl = "{$baseUrl}/api/v1/download.php?file=" . urlencode($finalFilename);
 
     echo json_encode([
         'status'         => 'success',
         'message'        => 'Image compressed and optimized successfully.',
         'data'           => [
-            'filename'         => $finalFilename,
-            'download_url'     => $downloadUrl,
+            'filename'            => $finalFilename,
+            'download_url'        => $downloadUrl,
+            'direct_download_url' => $directDownloadUrl,
             'original_name'    => $originalFileName,
             'original_size_kb' => round($result['original_size'] / 1024, 2),
             'compressed_size_kb' => round($result['compressed_size'] / 1024, 2),

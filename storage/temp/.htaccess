@@ -17,10 +17,13 @@ RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .cgi .pl .asp .asp
 RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .cgi .pl .asp .aspx .sh .bash .py
 SetHandler default-handler
 
-# 3. Prevent MIME-sniffing attacks (browser executing XSS inside SVG/HTML disguised as JPG)
+# 3. Prevent MIME-sniffing attacks & Allow Cross-Origin Image Fetch & Direct Download
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
-    Header set Content-Security-Policy "default-src 'none'; sandbox"
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+    Header set Access-Control-Allow-Headers "*"
+    Header set Access-Control-Expose-Headers "Content-Length, Content-Type, Content-Disposition"
 </IfModule>
 
 # 4. Disable Directory Browsing and Script Execution
