@@ -103,12 +103,15 @@ try {
 
 // Extraction options
 $prefix = ScalePixelSecurity::sanitizePrefix($_POST['prefix'] ?? 'media');
-$mode = trim($_POST['mode'] ?? 'balanced'); // avatar, showcase, balanced, max, lossless
+$mode = trim($_POST['mode'] ?? 'balanced'); // avatar, document, gallery, showcase, balanced, max, lossless
 $format = strtolower(trim($_POST['format'] ?? 'auto'));
 $quality = isset($_POST['quality']) ? (int) $_POST['quality'] : 80;
 $width = !empty($_POST['width']) ? (int) $_POST['width'] : null;
 $height = !empty($_POST['height']) ? (int) $_POST['height'] : null;
-$fit = trim($_POST['fit'] ?? 'cover');
+$fit = trim($_POST['fit'] ?? '');
+if (empty($fit)) {
+    $fit = ($mode === 'avatar') ? 'cover' : 'inside';
+}
 $includeSeconds = isset($_POST['include_seconds']) ? filter_var($_POST['include_seconds'], FILTER_VALIDATE_BOOLEAN) : true;
 
 // Auto format resolution based on mode
@@ -120,9 +123,29 @@ if ($mode === 'avatar') {
         $height = 600;
     }
     $fit = 'cover';
+} elseif ($mode === 'document' || $mode === 'gallery') {
+    // Preserve natural aspect ratio (e.g. 1:2, 9:16, 4:3, etc.) without distortion
+    $format = ($format === 'auto' || empty($format)) ? 'jpeg' : $format;
+    if (!isset($_POST['quality'])) {
+        $quality = 85;
+    }
+    if (!$width && !$height) {
+        $width = 2400;
+        $height = 2400;
+    }
+    if (empty($_POST['fit']) || $_POST['fit'] !== 'cover') {
+        $fit = 'inside';
+    }
 } elseif ($mode === 'showcase') {
     $format = 'webp';
     $quality = 75;
+    if (!$width && !$height) {
+        $width = 1920;
+        $height = 1920;
+    }
+    if (empty($_POST['fit'])) {
+        $fit = 'inside';
+    }
 } elseif ($format === 'auto') {
     // If not specified, default to webp or keep original format
     $origExt = strtolower(pathinfo($originalFileName, PATHINFO_EXTENSION));

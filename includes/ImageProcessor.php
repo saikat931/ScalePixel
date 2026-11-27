@@ -89,14 +89,14 @@ class ImageProcessor {
     }
 
     /**
-     * Resize or crop image to target dimensions
+     * Resize or crop image to target dimensions while strictly preserving aspect ratio
      */
     public static function resize($sourceResource, $targetWidth = null, $targetHeight = null, $fit = 'cover') {
         $srcWidth = imagesx($sourceResource);
         $srcHeight = imagesy($sourceResource);
 
         if (!$targetWidth && !$targetHeight) {
-            return $sourceResource; // No resize needed
+            return $sourceResource; // No resize needed, keep 100% original
         }
 
         if ($targetWidth && !$targetHeight) {
@@ -124,11 +124,28 @@ class ImageProcessor {
                 $copyHeight = (int) round($srcWidth / $dstRatio);
                 $srcY = (int) round(($srcHeight - $copyHeight) / 2);
             }
-        } elseif ($fit === 'contain') {
-            // Maintain entire image within target bounds
-            $ratio = min($targetWidth / $srcWidth, $targetHeight / $srcHeight);
-            $targetWidth = (int) round($srcWidth * $ratio);
-            $targetHeight = (int) round($srcHeight * $ratio);
+        } elseif ($fit === 'contain' || $fit === 'inside' || $fit === 'scale-down') {
+            // Strictly maintain original aspect ratio (1:2, 9:16, 4:3, etc.) within target bounding box
+            $scale = min($targetWidth / $srcWidth, $targetHeight / $srcHeight);
+            
+            // If 'inside' or 'scale-down', never upscale if image is already smaller than target bounds
+            if (($fit === 'inside' || $fit === 'scale-down') && $scale > 1) {
+                $scale = 1;
+            }
+            $targetWidth = (int) round($srcWidth * $scale);
+            $targetHeight = (int) round($srcHeight * $scale);
+        } elseif ($fit === 'none' || $fit === 'original' || $fit === 'natural') {
+            // Keep original width and height
+            $targetWidth = $srcWidth;
+            $targetHeight = $srcHeight;
+        } elseif ($fit === 'fill' || $fit === 'stretch') {
+            // Explicit stretch request only
+            // $targetWidth and $targetHeight used as-is
+        } else {
+            // Safe fallback: Always preserve natural aspect ratio without distortion
+            $scale = min($targetWidth / $srcWidth, $targetHeight / $srcHeight);
+            $targetWidth = (int) round($srcWidth * $scale);
+            $targetHeight = (int) round($srcHeight * $scale);
         }
 
         $destResource = imagecreatetruecolor($targetWidth, $targetHeight);
@@ -308,15 +325,33 @@ class ImageProcessor {
                 $targetHeight = 600;
             }
             $fit = 'cover';
+        } elseif ($mode === 'document' || $mode === 'gallery') {
+            $targetFormat = 'jpeg';
+            if (!isset($options['quality'])) {
+                $quality = 85;
+            }
+            if (!$targetWidth && !$targetHeight) {
+                $targetWidth = 2400;
+                $targetHeight = 2400;
+            }
+            if ($fit !== 'cover') {
+                $fit = 'inside';
+            }
         } elseif ($mode === 'showcase') {
             $targetFormat = 'webp';
             $quality = 75;
             if (!$targetWidth && !$targetHeight) {
-                $targetWidth = 1080;
+                $targetWidth = 1920;
+                $targetHeight = 1920;
             }
-            $fit = 'contain';
+            if ($fit !== 'cover') {
+                $fit = 'inside';
+            }
         } elseif ($mode === 'lossless') {
             $quality = 95;
+            if ($fit !== 'cover') {
+                $fit = 'inside';
+            }
         } elseif ($mode === 'max') {
             $quality = 60;
         }
