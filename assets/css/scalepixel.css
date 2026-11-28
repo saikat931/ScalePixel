@@ -36,27 +36,29 @@
 
 @layer sp-base {
   :root {
+    color-scheme: dark;
     --sp-bg: #081408;
-    --sp-sidebar-bg: #0B180D;
-    --sp-surface: #1D301C;
-    --sp-active-bg: #30481B;
-    --sp-field: rgba(8, 20, 8, 0.56);
+    --sp-sidebar-bg: #0b180d;
+    --sp-surface: #1d301c;
+    --sp-active-bg: #30481b;
+    --sp-field: rgba(8, 20, 8, 0.52);
 
-    --sp-accent: #B9F236;
-    --sp-accent-hover: #CBFF50;
+    --sp-accent: #b9f236;
+    --sp-accent-hover: #cbff50;
+    --sp-accent-pressed: #9ed624;
     --sp-on-accent: #081408;
 
-    --sp-text: #F5F8F2;
-    --sp-text-secondary: #B5C3AE;
-    --sp-text-muted: #8D9E85;
+    --sp-text: #f5f8f2;
+    --sp-text-secondary: #b5c3ae;
+    --sp-text-muted: #8d9e85;
 
-    --sp-border: #3D5037;
+    --sp-border: #3d5037;
     --sp-border-glass: rgba(180, 210, 160, 0.18);
-    --sp-focus: #B9F236;
+    --sp-focus: #b9f236;
 
-    --sp-success: #A9ED45;
-    --sp-warning: #F5B731;
-    --sp-error: #FF7373;
+    --sp-success: #a9ed45;
+    --sp-warning: #f5b731;
+    --sp-error: #ff7373;
 
     --sp-radius-sm: 10px;
     --sp-radius-md: 12px;
@@ -93,8 +95,9 @@
     min-height: 100vh;
     background-color: var(--sp-bg);
     background-image:
-      radial-gradient(ellipse 70% 50% at 75% 8%, rgba(89, 120, 67, 0.18) 0%, rgba(8, 20, 8, 0) 70%),
-      radial-gradient(ellipse 55% 45% at 15% 88%, rgba(48, 72, 27, 0.16) 0%, rgba(8, 20, 8, 0) 70%);
+      radial-gradient(ellipse at 63% 0%, rgba(140, 172, 57, 0.22), transparent 38%),
+      radial-gradient(ellipse at 24% 30%, rgba(81, 113, 46, 0.18), transparent 36%),
+      linear-gradient(135deg, #10200e 0%, #081408 48%, #060f07 100%);
     background-attachment: fixed;
     color: var(--sp-text);
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -306,7 +309,7 @@
     gap: 8px;
     padding: 8px 12px;
     border-radius: var(--sp-radius-md);
-    background: rgba(48, 72, 27, 0.35);
+    background: rgba(48, 72, 27, 0.45);
     border: 1px solid rgba(180, 210, 160, 0.14);
     font-size: 12px;
     font-weight: 500;
@@ -339,6 +342,7 @@
   }
 
   .sp-main {
+    position: relative;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -347,6 +351,26 @@
     max-width: 1440px;
     width: 100%;
     margin: 0 auto;
+  }
+
+  .sp-main::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: var(--sp-sidebar-width);
+    background-image: url("../img/watermark.svg");
+    background-repeat: repeat;
+    background-position: center top;
+    background-size: 380px 240px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .sp-main > * {
+    position: relative;
+    z-index: 1;
   }
 
   .sp-header {
@@ -546,6 +570,11 @@
     background: var(--sp-accent-hover);
     border-color: var(--sp-accent-hover);
     color: var(--sp-on-accent);
+  }
+
+  .sp-btn-primary:active:not(:disabled) {
+    background: var(--sp-accent-pressed);
+    border-color: var(--sp-accent-pressed);
   }
 
   .sp-btn-ghost {
@@ -1075,12 +1104,12 @@
   }
 
   .sp-progress::-webkit-progress-value {
-    background: linear-gradient(90deg, #a7e53e, var(--sp-accent));
+    background: linear-gradient(90deg, var(--sp-accent-pressed), var(--sp-accent));
     border-radius: 99px;
   }
 
   .sp-progress::-moz-progress-bar {
-    background: linear-gradient(90deg, #a7e53e, var(--sp-accent));
+    background: linear-gradient(90deg, var(--sp-accent-pressed), var(--sp-accent));
     border-radius: 99px;
   }
 
@@ -1379,6 +1408,7 @@
   @media (max-width: 767px) {
     .sp-app { display: block; }
     .sp-main { padding: 16px; gap: 16px; }
+    .sp-main::before { left: 0; }
     .sp-sidebar {
       position: fixed;
       inset: 0 auto 0 0;

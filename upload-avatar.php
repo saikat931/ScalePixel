@@ -70,7 +70,7 @@ $providerName = htmlspecialchars(trim($_GET['name'] ?? 'Service Provider'), ENT_
                 <img
                     id="avatarPreview"
                     class="sp-avatar-img"
-                    src="https://ui-avatars.com/api/?name=<?= urlencode($providerName ?: 'SP') ?>&background=30481B&color=F5F8F2&size=160&bold=true"
+                    src="https://ui-avatars.com/api/?name=<?= urlencode($providerName ?: 'SP') ?>&background=30481b&color=f5f8f2&size=160&bold=true"
                     alt="Provider avatar preview"
                 >
                 <div id="avatarLoading" class="sp-avatar-overlay">
