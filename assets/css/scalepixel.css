@@ -262,32 +262,66 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 0 10px 28px;
+    margin: 0 8px 28px;
     text-decoration: none;
     color: var(--sp-text);
+    transition: transform var(--sp-motion);
+  }
+
+  .sp-logo:hover .sp-logo-badge {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(214, 184, 156, 0.16), 0 4px 12px rgba(0, 0, 0, 0.35);
   }
 
   .sp-logo-badge {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
     display: grid;
     place-items: center;
-    background: var(--sp-accent);
-    color: var(--sp-on-accent);
     flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+    transition: transform var(--sp-motion), box-shadow var(--sp-motion);
+  }
+
+  .sp-brand-svg {
+    display: block;
+    width: 40px;
+    height: 40px;
   }
 
   .sp-logo-text {
-    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .sp-logo-wordmark {
+    font-family: var(--sp-font-heading);
+    font-size: 22px;
     font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
     color: var(--sp-text);
   }
 
-  .sp-logo-text span {
-    color: var(--sp-accent);
+  .sp-logo-wordmark span {
+    background: linear-gradient(135deg, #f5e4d2 0%, var(--sp-accent) 55%, var(--sp-accent-pressed) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .sp-logo-sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sp-text-muted);
   }
 
   .sp-nav {
@@ -1706,6 +1740,11 @@
     .sp-tab[aria-selected='true'],
     .sp-nav-link[aria-current='page'] {
       outline: 2px solid Highlight;
+    }
+    .sp-logo-wordmark span {
+      background: none;
+      color: CanvasText;
+      -webkit-text-fill-color: CanvasText;
     }
   }
 }

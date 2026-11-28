@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+  <defs>
+    <linearGradient id="sp-bg-grad" x1="4" y1="2" x2="36" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E341D"/>
+      <stop offset="55%" stop-color="#0E1D0E"/>
+      <stop offset="100%" stop-color="#071207"/>
+    </linearGradient>
+    <linearGradient id="sp-rim-grad" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F2DFCC" stop-opacity="0.72"/>
+      <stop offset="50%" stop-color="#D6B89C" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#B99A7D" stop-opacity="0.58"/>
+    </linearGradient>
+    <linearGradient id="sp-coffee-grad" x1="18" y1="9" x2="31" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F6E5D4"/>
+      <stop offset="55%" stop-color="#D6B89C"/>
+      <stop offset="100%" stop-color="#B99A7D"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="38" height="38" rx="11" fill="url(#sp-bg-grad)" stroke="url(#sp-rim-grad)" stroke-width="1.25"/>
+  <rect x="2.25" y="2.25" width="35.5" height="35.5" rx="9.75" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="0.75"/>
+  <!-- Precision framing brackets -->
+  <path d="M9.5 15V11.5C9.5 10.3954 10.3954 9.5 11.5 9.5H15" stroke="#D6B89C" stroke-opacity="0.65" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M30.5 25V28.5C30.5 29.6046 29.6046 30.5 28.5 30.5H25" stroke="#D6B89C" stroke-opacity="0.65" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- 2x2 Scaling Pixel Matrix -->
+  <rect x="12" y="12.5" width="6.75" height="6.75" rx="2" fill="#D6B89C" fill-opacity="0.48"/>
+  <rect x="12" y="21.25" width="6.75" height="6.75" rx="2" fill="#B5C3AE" fill-opacity="0.22" stroke="#B5C3AE" stroke-opacity="0.32" stroke-width="0.75"/>
+  <rect x="20.75" y="21.25" width="6.75" height="6.75" rx="2" fill="#D6B89C" fill-opacity="0.68"/>
+  <rect x="21.25" y="10.75" width="8" height="8" rx="2.4" fill="url(#sp-coffee-grad)"/>
+  <circle cx="25.25" cy="14.75" r="1.15" fill="#261B13" fill-opacity="0.75"/>
+</svg>

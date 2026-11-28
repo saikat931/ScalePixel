@@ -29,6 +29,7 @@ $navItems = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
     <meta name="description" content="ScalePixel is a high-performance image compression and universal format conversion engine. Convert and compress JPG, PNG, WebP, AVIF with enterprise REST APIs.">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg">
     <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
@@ -44,8 +45,11 @@ $navItems = [
             <div class="sp-sidebar-top">
                 <div class="sp-sidebar-top-row">
                     <a href="index.php" class="sp-logo" aria-label="ScalePixel home">
-                        <span class="sp-logo-badge"><?= sp_icon('zap', '', 20) ?></span>
-                        <span class="sp-logo-text">Scale<span>Pixel</span></span>
+                        <span class="sp-logo-badge"><?= sp_brand_mark(40) ?></span>
+                        <span class="sp-logo-text">
+                            <span class="sp-logo-wordmark">Scale<span>Pixel</span></span>
+                            <span class="sp-logo-sub">Image Studio</span>
+                        </span>
                     </a>
                     <button
                         type="button"

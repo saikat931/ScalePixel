@@ -63,3 +63,37 @@ function sp_icon(string $name, string $class = '', int $size = 18, array $attrs 
         $inner
     );
 }
+
+function sp_brand_mark(int $size = 40): string {
+    return sprintf(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="%1$d" height="%1$d" viewBox="0 0 40 40" fill="none" class="sp-brand-svg" aria-hidden="true" focusable="false">'
+        . '<defs>'
+        . '<linearGradient id="spLogoBg" x1="4" y1="2" x2="36" y2="38" gradientUnits="userSpaceOnUse">'
+        . '<stop offset="0%%" stop-color="#1E341D"/>'
+        . '<stop offset="55%%" stop-color="#0E1D0E"/>'
+        . '<stop offset="100%%" stop-color="#071207"/>'
+        . '</linearGradient>'
+        . '<linearGradient id="spLogoRim" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse">'
+        . '<stop offset="0%%" stop-color="#F2DFCC" stop-opacity="0.78"/>'
+        . '<stop offset="50%%" stop-color="#D6B89C" stop-opacity="0.35"/>'
+        . '<stop offset="100%%" stop-color="#B99A7D" stop-opacity="0.62"/>'
+        . '</linearGradient>'
+        . '<linearGradient id="spLogoAccent" x1="20" y1="10" x2="30" y2="20" gradientUnits="userSpaceOnUse">'
+        . '<stop offset="0%%" stop-color="#F6E5D4"/>'
+        . '<stop offset="55%%" stop-color="#D6B89C"/>'
+        . '<stop offset="100%%" stop-color="#B99A7D"/>'
+        . '</linearGradient>'
+        . '</defs>'
+        . '<rect x="1" y="1" width="38" height="38" rx="11" fill="url(#spLogoBg)" stroke="url(#spLogoRim)" stroke-width="1.25"/>'
+        . '<rect x="2.25" y="2.25" width="35.5" height="35.5" rx="9.75" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="0.75"/>'
+        . '<path d="M9.5 15V11.5C9.5 10.3954 10.3954 9.5 11.5 9.5H15" stroke="#D6B89C" stroke-opacity="0.68" stroke-width="1.6" stroke-linecap="round"/>'
+        . '<path d="M30.5 25V28.5C30.5 29.6046 29.6046 30.5 28.5 30.5H25" stroke="#D6B89C" stroke-opacity="0.68" stroke-width="1.6" stroke-linecap="round"/>'
+        . '<rect x="12" y="12.5" width="6.75" height="6.75" rx="2" fill="#D6B89C" fill-opacity="0.48"/>'
+        . '<rect x="12" y="21.25" width="6.75" height="6.75" rx="2" fill="#B5C3AE" fill-opacity="0.22" stroke="#B5C3AE" stroke-opacity="0.32" stroke-width="0.75"/>'
+        . '<rect x="20.75" y="21.25" width="6.75" height="6.75" rx="2" fill="#D6B89C" fill-opacity="0.72"/>'
+        . '<rect x="21.25" y="10.75" width="8" height="8" rx="2.4" fill="url(#spLogoAccent)"/>'
+        . '<circle cx="25.25" cy="14.75" r="1.15" fill="#261B13" fill-opacity="0.78"/>'
+        . '</svg>',
+        $size
+    );
+}

@@ -10,6 +10,7 @@ $providerName = htmlspecialchars(trim($_GET['name'] ?? 'Service Provider'), ENT_
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Provider Photo - ScalePixel</title>
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg">
     <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
