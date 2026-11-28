@@ -18,8 +18,8 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 # Copy application files
 COPY . /var/www/html/
 
-# Configure permissions for temporary image storage
-RUN chown -R www-data:www-data /var/www/html/storage/temp \
-    && chmod -R 775 /var/www/html/storage/temp
+# Configure permissions for storage (keys, ephemeral cache, live sites)
+RUN chown -R www-data:www-data /var/www/html/storage \
+    && chmod -R 775 /var/www/html/storage
 
 EXPOSE 80

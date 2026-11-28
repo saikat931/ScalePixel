@@ -6,8 +6,54 @@
 
 class ScalePixelLiveSites {
 
-    private static $logFile = __DIR__ . '/../storage/live_sites.json';
-    private static $adminFile = __DIR__ . '/../storage/admin.json';
+    private static $storageDir = __DIR__ . '/../storage';
+
+    private static function getLogFile(): string {
+        return self::resolveRuntimeFile('live_sites.json');
+    }
+
+    private static function getAdminFile(): string {
+        return self::resolveRuntimeFile('admin.json');
+    }
+
+    /**
+     * Resolve a writable file path inside storage/, falling back to system temp outside webroot.
+     */
+    private static function resolveRuntimeFile(string $filename): string {
+        $primaryDir = self::$storageDir;
+        if (!is_dir($primaryDir)) {
+            @mkdir($primaryDir, 0775, true);
+        }
+        $primaryPath = $primaryDir . '/' . $filename;
+
+        $fallbackDir = rtrim(sys_get_temp_dir(), '/\\') . DIRECTORY_SEPARATOR . 'scalepixel_runtime';
+        $fallbackPath = $fallbackDir . DIRECTORY_SEPARATOR . $filename;
+
+        if (file_exists($primaryPath) && is_writable($primaryPath)) {
+            return $primaryPath;
+        }
+        if (!file_exists($primaryPath) && file_exists($fallbackPath)) {
+            return $fallbackPath;
+        }
+
+        if (!file_exists($primaryPath) && is_dir($primaryDir) && is_writable($primaryDir)) {
+            $probe = $primaryDir . '/.sp_write_probe';
+            $fp = @fopen($probe, 'w');
+            if ($fp !== false) {
+                fclose($fp);
+                @unlink($probe);
+                return $primaryPath;
+            }
+        }
+
+        if (!is_dir($fallbackDir)) {
+            @mkdir($fallbackDir, 0700, true);
+        }
+        if (file_exists($primaryPath) && !file_exists($fallbackPath)) {
+            @copy($primaryPath, $fallbackPath);
+        }
+        return $fallbackPath;
+    }
 
     /**
      * Start a hardened PHP session for admin authentication.
@@ -42,10 +88,11 @@ class ScalePixelLiveSites {
         if (is_string($envHash) && $envHash !== '') {
             return true;
         }
-        if (!file_exists(self::$adminFile)) {
+        $adminFile = self::getAdminFile();
+        if (!file_exists($adminFile)) {
             return false;
         }
-        $data = json_decode((string)@file_get_contents(self::$adminFile), true);
+        $data = json_decode((string)@file_get_contents($adminFile), true);
         return is_array($data) && !empty($data['password_hash']);
     }
 
@@ -60,9 +107,10 @@ class ScalePixelLiveSites {
             return ['ok' => false, 'error' => 'Password must be at least 8 characters long.'];
         }
 
-        $dir = dirname(self::$adminFile);
+        $adminFile = self::getAdminFile();
+        $dir = dirname($adminFile);
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            @mkdir($dir, 0755, true);
         }
 
         $payload = json_encode([
@@ -70,7 +118,7 @@ class ScalePixelLiveSites {
             'updated_at'    => date('c'),
         ], JSON_PRETTY_PRINT);
 
-        $fp = @fopen(self::$adminFile, 'c+');
+        $fp = @fopen($adminFile, 'c+');
         if (!$fp) {
             return ['ok' => false, 'error' => 'Unable to write admin configuration file.'];
         }
@@ -81,7 +129,7 @@ class ScalePixelLiveSites {
         fflush($fp);
         flock($fp, LOCK_UN);
         fclose($fp);
-        @chmod(self::$adminFile, 0600);
+        @chmod($adminFile, 0600);
 
         return ['ok' => true];
     }
@@ -100,7 +148,7 @@ class ScalePixelLiveSites {
 
         $hash = getenv('SCALEPIXEL_ADMIN_HASH');
         if (!is_string($hash) || $hash === '') {
-            $data = json_decode((string)@file_get_contents(self::$adminFile), true);
+            $data = json_decode((string)@file_get_contents(self::getAdminFile()), true);
             $hash = is_array($data) ? ($data['password_hash'] ?? '') : '';
         }
 
@@ -205,12 +253,13 @@ class ScalePixelLiveSites {
             }
         }
 
-        $dir = dirname(self::$logFile);
+        $logFile = self::getLogFile();
+        $dir = dirname($logFile);
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            @mkdir($dir, 0755, true);
         }
 
-        $fp = @fopen(self::$logFile, 'c+');
+        $fp = @fopen($logFile, 'c+');
         if (!$fp) {
             return;
         }
@@ -241,10 +290,11 @@ class ScalePixelLiveSites {
      * Read logged website URLs.
      */
     public static function getSites(): array {
-        if (!file_exists(self::$logFile)) {
+        $logFile = self::getLogFile();
+        if (!file_exists($logFile)) {
             return [];
         }
-        $fp = @fopen(self::$logFile, 'r');
+        $fp = @fopen($logFile, 'r');
         if (!$fp) {
             return [];
         }
@@ -269,11 +319,12 @@ class ScalePixelLiveSites {
      * Clear all logged website URLs immediately.
      */
     public static function clear(): void {
-        $dir = dirname(self::$logFile);
+        $logFile = self::getLogFile();
+        $dir = dirname($logFile);
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            @mkdir($dir, 0755, true);
         }
-        $fp = @fopen(self::$logFile, 'c+');
+        $fp = @fopen($logFile, 'c+');
         if (!$fp) {
             return;
         }
