@@ -5,6 +5,8 @@ storage/temp/*
 !storage/temp/test_*.jpg
 !storage/temp/provider_39_*.jpg
 .env
+storage/live_sites.json
+storage/admin.json
 *.log
 .DS_Store
 Thumbs.db

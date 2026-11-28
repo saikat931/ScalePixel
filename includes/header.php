@@ -17,6 +17,7 @@ if (!isset($pageSubtitle)) {
 $navItems = [
     ['id' => 'home', 'href' => 'index.php', 'label' => 'Studio', 'icon' => 'sliders-horizontal'],
     ['id' => 'keys', 'href' => 'api-dashboard.php', 'label' => 'API Keys', 'icon' => 'key'],
+    ['id' => 'live-sites', 'href' => 'live-sites.php', 'label' => 'Live Sites', 'icon' => 'globe'],
     ['id' => 'docs', 'href' => 'docs.php', 'label' => 'Documentation', 'icon' => 'book-open'],
     ['id' => 'about', 'href' => 'about.php', 'label' => 'About', 'icon' => 'info'],
     ['id' => 'contact', 'href' => 'contact.php', 'label' => 'Contact', 'icon' => 'mail'],

@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 require_once __DIR__ . '/../../includes/Security.php';
 require_once __DIR__ . '/../../includes/ImageProcessor.php';
 require_once __DIR__ . '/../../includes/Auth.php';
+require_once __DIR__ . '/../../includes/LiveSites.php';
 
 // IP Rate Limiting (Anti-DoS Protection)
 try {
@@ -175,6 +176,7 @@ try {
     if (!empty($auth['source_key']) && $auth['source_key'] !== 'web_studio_session') {
         ScalePixelAuth::recordUsage($auth['source_key'], $result['saved_bytes']);
     }
+    ScalePixelLiveSites::recordFromRequest(!empty($auth['is_web_client']));
 
     $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
         || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')

@@ -5,7 +5,7 @@ Options -Indexes -MultiViews
 ServerSignature Off
 
 # 1. Deny access to sensitive files, configs, and hidden directories
-<FilesMatch "^(\.git|\.env|\.htaccess|keys\.json|\.user\.ini|php\.ini|\.bak|\.sql|\.log)$">
+<FilesMatch "^(\.git|\.env|\.htaccess|keys\.json|live_sites\.json|admin\.json|\.user\.ini|php\.ini|\.bak|\.sql|\.log)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
