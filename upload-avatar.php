@@ -12,6 +12,7 @@ $providerName = htmlspecialchars(trim($_GET['name'] ?? 'Service Provider'), ENT_
     <title>Upload Provider Photo - ScalePixel</title>
     <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="assets/css/scalepixel.css">
     <style>
         .sp-avatar-shell {

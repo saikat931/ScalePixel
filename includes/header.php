@@ -31,6 +31,7 @@ $navItems = [
     <meta name="description" content="ScalePixel is a high-performance image compression and universal format conversion engine. Convert and compress JPG, PNG, WebP, AVIF with enterprise REST APIs.">
     <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="assets/css/scalepixel.css">
 </head>
 <body>

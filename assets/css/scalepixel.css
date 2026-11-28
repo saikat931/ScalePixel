@@ -35,11 +35,20 @@
   src: url("../fonts/poppins-700.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/montserrat.woff2") format("woff2");
+}
+
 @layer sp-base, sp-layout, sp-components, sp-responsive;
 
 @layer sp-base {
   :root {
     color-scheme: dark;
+    --sp-font-heading: "Montserrat", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --sp-bg: #081408;
     --sp-sidebar-bg: #0b180d;
     --sp-surface: #1d301c;
@@ -164,6 +173,11 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .sp-card-title {
+    font-family: var(--sp-font-heading);
   }
 
   .sp-app h1 {
