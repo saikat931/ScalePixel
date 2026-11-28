@@ -61,7 +61,7 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- Alert for newly generated key -->
 <?php if ($createdKey): ?>
-    <section class="sp-glass" style="border-color: rgba(169, 237, 69, 0.45);" aria-live="polite">
+    <section class="sp-glass" style="border-color: rgba(168, 197, 139, 0.45);" aria-live="polite">
         <div class="sp-card-header" style="margin-bottom: 12px;">
             <h3 class="sp-card-title sp-state-success">
                 <?= sp_icon('check-circle-2', 'sp-state-success', 20) ?>

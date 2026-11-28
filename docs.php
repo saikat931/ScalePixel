@@ -189,7 +189,7 @@ X-ScalePixel-Secret: sp_live_sk_YOUR_SECRET_KEY</pre>
 </section>
 
 <!-- 4. Avatar Mode Highlight -->
-<section class="sp-glass" id="avatar-mode" style="border-color: rgba(169, 237, 69, 0.32);">
+<section class="sp-glass" id="avatar-mode" style="border-color: rgba(168, 197, 139, 0.32);">
     <div class="sp-card-header">
         <h2 class="sp-card-title" style="font-size: 20px;">
             <?= sp_icon('user', '', 18) ?>

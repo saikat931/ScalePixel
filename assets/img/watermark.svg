@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="380" height="240" viewBox="0 0 380 240" fill="none">
   <defs>
     <g id="sp-mark">
-      <rect x="0" y="0" width="28" height="28" rx="7" stroke="#B9F236" stroke-width="1.5" fill="#30481B" fill-opacity="0.35"/>
-      <polygon points="15.5 5.5 8 15 14 15 12.5 22.5 20 13 14 13 15.5 5.5" stroke="#B9F236" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
-      <text x="38" y="20" fill="#B5C3AE" font-family="Poppins, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="0.06em">SCALE<tspan fill="#B9F236">PIXEL</tspan></text>
+      <rect x="0" y="0" width="28" height="28" rx="7" stroke="#D6B89C" stroke-width="1.5" fill="#3D3B2A" fill-opacity="0.35"/>
+      <polygon points="15.5 5.5 8 15 14 15 12.5 22.5 20 13 14 13 15.5 5.5" stroke="#D6B89C" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+      <text x="38" y="20" fill="#B5C3AE" font-family="Poppins, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="0.06em">SCALE<tspan fill="#D6B89C">PIXEL</tspan></text>
     </g>
   </defs>
   <g opacity="0.075">
@@ -11,7 +11,7 @@
     <use href="#sp-mark" transform="translate(206, 184) rotate(-22)"/>
     <circle cx="18" cy="18" r="1.2" fill="#8D9E85"/>
     <circle cx="208" cy="18" r="1.2" fill="#8D9E85"/>
-    <circle cx="113" cy="138" r="1.2" fill="#B9F236"/>
+    <circle cx="113" cy="138" r="1.2" fill="#D6B89C"/>
     <circle cx="303" cy="138" r="1.2" fill="#8D9E85"/>
   </g>
 </svg>
