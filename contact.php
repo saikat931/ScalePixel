@@ -1,66 +1,96 @@
 <?php
-$pageTitle = 'Contact Support & Enterprise Inquiries - ScalePixel';
-$activeNav = 'contact';
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/icons.php';
 
 $sentSuccess = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'])) {
     $sentSuccess = true;
 }
+
+$pageTitle = 'Contact Support & Enterprise Inquiries - ScalePixel';
+$activeNav = 'contact';
+$pageEyebrow = 'Support & SLA Assistance';
+$pageHeading = 'Contact & developer support';
+$pageSubtitle = 'Questions about custom rate limits, AWS Lambda deployment, or mobile SDK integration? Reach our engineering team.';
+
+require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div class="page-container" style="max-width: 800px;">
-    <div class="legal-card">
-        <h1>Contact & Developer Support</h1>
-        <div class="meta-date">Technical Support • Enterprise Inquiries • SLA Assistance</div>
+<div class="sp-grid-2">
+    <section class="sp-glass">
+        <div class="sp-card-header">
+            <h2 class="sp-card-title" style="font-size: 20px;">
+                <?= sp_icon('mail', '', 18) ?>
+                <span>Send an Inquiry</span>
+            </h2>
+        </div>
 
         <?php if ($sentSuccess): ?>
-            <div style="background: rgba(0, 245, 160, 0.12); border: 1px solid var(--emerald); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px; color: var(--emerald); font-weight: 700;">
-                ✓ Thank you! Your inquiry has been received. Our engineering team typically responds within 2 business hours.
+            <div class="sp-alert sp-state-success" role="status" style="margin-bottom: 20px;">
+                <?= sp_icon('check-circle-2', '', 18) ?>
+                <span>Thank you! Your inquiry has been received. Our engineering team typically responds within 2 business hours.</span>
             </div>
         <?php endif; ?>
 
-        <p style="margin-bottom: 24px;">
-            Have questions about custom rate limits, AWS Lambda deployment, or integrating ScalePixel with your mobile applications? Send a message to our engineering team.
-        </p>
-
-        <form method="POST" action="contact.php">
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">YOUR NAME</label>
-                <input type="text" name="name" required placeholder="e.g. John Doe" class="control-input">
+        <form method="POST" action="contact.php" class="sp-form-stack">
+            <div class="sp-field">
+                <label class="sp-label" for="contact_name">Your Name</label>
+                <input type="text" id="contact_name" name="name" required placeholder="e.g. John Doe" class="sp-input">
             </div>
 
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">EMAIL ADDRESS</label>
-                <input type="email" name="email" required placeholder="e.g. developer@company.com" class="control-input">
+            <div class="sp-field">
+                <label class="sp-label" for="contact_email">Email Address</label>
+                <input type="email" id="contact_email" name="email" required placeholder="e.g. developer@company.com" class="sp-input">
             </div>
 
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">SUBJECT / INQUIRY TYPE</label>
-                <select name="subject" class="control-select">
-                    <option value="Integration">Platform & Mobile App SDK Integration</option>
-                    <option value="API Keys">API Keys & Quota Limit Increase</option>
+            <div class="sp-field">
+                <label class="sp-label" for="contact_subject">Subject / Inquiry Type</label>
+                <select id="contact_subject" name="subject" class="sp-select">
+                    <option value="Integration">Platform &amp; Mobile App SDK Integration</option>
+                    <option value="API Keys">API Keys &amp; Quota Limit Increase</option>
                     <option value="AWS Lambda">AWS Lambda / GitHub Auto-Deploy</option>
                     <option value="Bug Report">Technical Bug Report</option>
                     <option value="General">General Inquiry</option>
                 </select>
             </div>
 
-            <div style="margin-bottom: 24px;">
-                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">MESSAGE</label>
-                <textarea name="message" required rows="5" placeholder="How can we assist your integration?" class="control-input" style="resize: vertical;"></textarea>
+            <div class="sp-field">
+                <label class="sp-label" for="contact_message">Message</label>
+                <textarea id="contact_message" name="message" required rows="5" placeholder="How can we assist your integration?" class="sp-textarea"></textarea>
             </div>
 
-            <button type="submit" class="nav-btn" style="width: 100%; border: none; cursor: pointer; padding: 14px; font-size: 14px;">
-                Send Message ➔
+            <button type="submit" class="sp-btn sp-btn-primary" style="width: 100%;">
+                <?= sp_icon('send', '', 16) ?>
+                <span>Send Message</span>
             </button>
         </form>
+    </section>
 
-        <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-secondary);">
-            <div>📧 Direct Support: <strong style="color: var(--cyan);">support@scalepixel.io</strong></div>
-            <div>⚡ ScalePixel Core Team: <strong style="color: var(--emerald);">dev@scalepixel.io</strong></div>
+    <aside class="sp-glass" style="display: grid; gap: 18px; align-content: start;">
+        <div class="sp-card-header" style="margin-bottom: 0;">
+            <h3 class="sp-card-title">
+                <?= sp_icon('info', '', 18) ?>
+                <span>Direct Channels</span>
+            </h3>
         </div>
-    </div>
+        <p style="color: var(--sp-text-secondary);">
+            For urgent API integration assistance, enterprise volume plans, or security disclosures, contact our team directly.
+        </p>
+
+        <div class="sp-metric">
+            <span class="sp-metric-label"><?= sp_icon('mail', '', 14) ?> Direct Support</span>
+            <span class="sp-metric-value is-compact">support@scalepixel.io</span>
+        </div>
+
+        <div class="sp-metric">
+            <span class="sp-metric-label"><?= sp_icon('code-2', '', 14) ?> Core Engineering</span>
+            <span class="sp-metric-value is-compact">dev@scalepixel.io</span>
+        </div>
+
+        <div class="sp-alert" style="color: var(--sp-text-secondary); border-color: var(--sp-border-glass);">
+            <?= sp_icon('book-open', '', 18) ?>
+            <span>Looking for endpoint headers or SDK snippets? Check the <a href="docs.php">REST API Documentation</a>.</span>
+        </div>
+    </aside>
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

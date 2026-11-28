@@ -1,310 +1,376 @@
 <?php
+require_once __DIR__ . '/includes/icons.php';
+
 $pageTitle = 'ScalePixel - Universal Image Compression & Conversion Engine';
 $activeNav = 'home';
+$pageEyebrow = 'Quantum Media Engine v1.0';
+$pageHeading = 'Compress & convert any image';
+$pageSubtitle = 'Fast, private image optimization. Transform heavy smartphone photos into lightweight payloads with zero persistent storage.';
+$headerActionsHtml =
+    '<a href="docs.php" class="sp-btn">' . sp_icon('book-open', '', 16) . '<span>API Docs</span></a>' .
+    '<a href="api-dashboard.php" class="sp-btn sp-btn-primary">' . sp_icon('key', '', 16) . '<span>Get API Keys</span></a>';
+
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="hero-pill">
-        <span>⚡</span> Quantum Media Processing Engine v1.0
-    </div>
-    <h1 class="hero-title">
-        Compress & Convert Any Image<br>
-        <span class="glow-gradient">In Under 80 Milliseconds</span>
-    </h1>
-    <p class="hero-subtitle">
-        Enterprise-grade image optimization. Transform heavy 10 MB smartphone photos into feather-light, razor-sharp 75 KB payloads with 0 data storage footprint.
-    </p>
-</section>
+<!-- Mode Tabs -->
+<div class="sp-tabs" role="tablist" aria-label="Optimization modes">
+    <button type="button" class="sp-tab" role="tab" aria-selected="true" tabindex="0" data-mode="auto">
+        <?= sp_icon('zap', '', 16) ?>
+        <span>Auto Smart</span>
+    </button>
+    <button type="button" class="sp-tab" role="tab" aria-selected="false" tabindex="-1" data-mode="avatar">
+        <?= sp_icon('user', '', 16) ?>
+        <span>Profile Avatar</span>
+    </button>
+    <button type="button" class="sp-tab" role="tab" aria-selected="false" tabindex="-1" data-mode="showcase">
+        <?= sp_icon('image', '', 16) ?>
+        <span>Web Showcase</span>
+    </button>
+    <button type="button" class="sp-tab" role="tab" aria-selected="false" tabindex="-1" data-mode="convert">
+        <?= sp_icon('refresh-cw', '', 16) ?>
+        <span>Format Converter</span>
+    </button>
+    <button type="button" class="sp-tab" role="tab" aria-selected="false" tabindex="-1" data-mode="custom">
+        <?= sp_icon('settings', '', 16) ?>
+        <span>Custom</span>
+    </button>
+</div>
 
-<!-- Studio Interactive Upload Zone -->
-<div class="studio-container">
-    <div class="glass-card">
-        <!-- Mode Tabs -->
-        <div class="mode-tabs">
-            <button class="mode-tab active" data-mode="auto">
-                <span>⚡</span> Auto Smart
-            </button>
-            <button class="mode-tab" data-mode="avatar">
-                <span>👤</span> Profile Avatar Mode
-            </button>
-            <button class="mode-tab" data-mode="showcase">
-                <span>🖼️</span> Web Showcase (WebP)
-            </button>
-            <button class="mode-tab" data-mode="convert">
-                <span>🔄</span> Format Converter
-            </button>
-            <button class="mode-tab" data-mode="custom">
-                <span>⚙️</span> Custom Parameters
-            </button>
-        </div>
-
-        <!-- Drop Zone -->
-        <div class="drop-zone" id="drop-zone">
-            <div class="drop-icon-wrap">⇪</div>
-            <div class="drop-title">Drop your images here or click to browse</div>
-            <div class="drop-sub">Fast client-to-engine processing • Max 25 MB per file • Batch uploads supported</div>
-            <div class="drop-badge-list">
-                <span class="format-pill">JPG</span>
-                <span class="format-pill">PNG</span>
-                <span class="format-pill">WEBP</span>
-                <span class="format-pill">AVIF</span>
-                <span class="format-pill">GIF</span>
-                <span class="format-pill">BMP</span>
-                <span class="format-pill">ICO</span>
+<!-- Studio Upload & Settings Grid -->
+<section class="sp-studio-grid" aria-label="Image upload and optimization controls">
+    <div class="sp-glass">
+        <div
+            class="sp-dropzone"
+            id="drop-zone"
+            role="button"
+            tabindex="0"
+            aria-label="Drop your images here or press Enter to browse files"
+        >
+            <div class="sp-upload-icon">
+                <?= sp_icon('upload-cloud', '', 34) ?>
             </div>
-            <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+            <h2>Drop your images here</h2>
+            <p class="sp-helper">Supported: JPG, PNG, WEBP, AVIF, GIF, BMP, ICO &bull; Max 25 MB per file</p>
+            <div class="sp-pill-row" aria-hidden="true">
+                <span class="sp-pill">JPG</span>
+                <span class="sp-pill">PNG</span>
+                <span class="sp-pill">WEBP</span>
+                <span class="sp-pill">AVIF</span>
+                <span class="sp-pill">GIF</span>
+                <span class="sp-pill">BMP</span>
+                <span class="sp-pill">ICO</span>
+            </div>
+            <button type="button" class="sp-btn sp-btn-primary sp-btn-sm" id="browse-btn" style="margin-top: 18px;">
+                <?= sp_icon('file-image', '', 15) ?>
+                <span>Browse Files</span>
+            </button>
+            <input type="file" id="file-input" multiple accept="image/*" class="sp-sr-only">
+        </div>
+    </div>
+
+    <div class="sp-glass">
+        <div class="sp-card-header">
+            <h3 class="sp-card-title">
+                <?= sp_icon('sliders', '', 18) ?>
+                <span>Optimization Settings</span>
+            </h3>
+            <span class="sp-badge sp-badge-accent">Batch Ready</span>
         </div>
 
-        <!-- Controls Grid -->
-        <div class="controls-grid">
-            <div class="control-item">
-                <label>Target Format</label>
-                <select id="format-select" class="control-select">
+        <div class="sp-form-stack">
+            <div class="sp-field">
+                <label class="sp-label" for="format-select">Target Format</label>
+                <select id="format-select" class="sp-select">
                     <option value="auto">Auto Optimal Format</option>
-                    <option value="jpeg">JPEG (.jpg) - Faces & Photos</option>
-                    <option value="webp">WebP (.webp) - Modern Web</option>
-                    <option value="avif">AVIF (.avif) - Ultra High Density</option>
-                    <option value="png">PNG (.png) - Graphics & Alpha</option>
-                    <option value="ico">ICO (.ico) - Favicon 32x32</option>
+                    <option value="jpeg">JPEG (.jpg) — Faces &amp; Photos</option>
+                    <option value="webp">WebP (.webp) — Modern Web</option>
+                    <option value="avif">AVIF (.avif) — Ultra High Density</option>
+                    <option value="png">PNG (.png) — Graphics &amp; Alpha</option>
+                    <option value="ico">ICO (.ico) — Favicon 32&times;32</option>
                 </select>
             </div>
 
-            <div class="control-item">
-                <label>Compression Quality</label>
-                <div class="range-wrap">
-                    <input type="range" id="quality-slider" min="10" max="100" value="80" class="control-range">
-                    <span id="quality-val" class="range-val">80%</span>
+            <div class="sp-field">
+                <label class="sp-label" for="quality-slider">Compression Quality</label>
+                <div class="sp-range-row">
+                    <input type="range" id="quality-slider" min="10" max="100" value="80" class="sp-range is-custom" aria-describedby="quality-val">
+                    <span id="quality-val" class="sp-value-pill">80%</span>
                 </div>
             </div>
 
-            <div class="control-item">
-                <label>Filename Prefix (e.g. provider_19)</label>
-                <input type="text" id="prefix-input" class="control-input" placeholder="e.g. provider_19 or shop_22" value="provider_19">
+            <div class="sp-field">
+                <label class="sp-label" for="prefix-input">Filename Prefix</label>
+                <input type="text" id="prefix-input" class="sp-input" placeholder="e.g. provider_19 or shop_22" value="provider_19">
+                <span class="sp-helper" id="mode-hint">Auto Smart balances file size and clarity (WebP for PNG transparency, JPEG for photos).</span>
             </div>
-        </div>
 
-        <!-- Results List -->
-        <div class="results-container" id="results-container">
-            <!-- Dynamically populated by studio.js -->
-        </div>
-    </div>
-</div>
-
-<!-- Interactive Before / After Split Slider -->
-<section class="comparison-section">
-    <div style="text-align: center; margin-bottom: 24px;">
-        <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 6px;">
-            Visual Fidelity Comparison
-        </h2>
-        <p style="color: var(--text-secondary); font-size: 14px;">
-            Drag the cyan center divider to compare the 10 MB original photo vs. the 75 KB ScalePixel compressed image.
-        </p>
-    </div>
-
-    <div class="comparison-box" id="compare-box">
-        <!-- Before Image (Original) -->
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=100" class="compare-img" alt="Original Uncompressed">
-        <span class="badge-tag before-tag">Original: 8.4 MB (Raw)</span>
-
-        <!-- After Image (Compressed) -->
-        <div class="compare-img after" id="compare-after">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80" id="after-img" class="compare-img" alt="ScalePixel Compressed">
-            <span class="badge-tag after-tag">ScalePixel: 72 KB (-99.1%)</span>
-        </div>
-
-        <!-- Draggable Handle -->
-        <div class="compare-handle" id="compare-handle">
-            <div class="handle-circle">↔</div>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; color: var(--sp-text-secondary);">
+                <input type="checkbox" id="include-seconds" class="sp-check" checked>
+                <span>Include seconds in timestamped filename</span>
+            </label>
         </div>
     </div>
 </section>
 
-<!-- Developer API Pricing Plans (₹9 and ₹49) -->
-<section class="pricing-section" id="pricing" style="max-width: 1140px; margin: 0 auto 60px; padding: 0 20px;">
-    <div style="text-align: center; margin-bottom: 24px;">
-        <div class="hero-pill" style="margin-bottom: 8px;">ScalePixel Developer Pricing</div>
-        <h2 style="font-size: 28px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 6px;">
-            Affordable Developer API Plans
-        </h2>
-        <p style="color: var(--text-secondary); font-size: 14px; max-width: 600px; margin: 0 auto;">
-            Transparent developer pricing with instant API key activation. Scale from prototypes to enterprise production.
-        </p>
+<!-- Queue Metrics & Visual Comparison -->
+<section class="sp-results-grid" aria-label="Compression queue and visual comparison">
+    <div class="sp-glass">
+        <div class="sp-card-header">
+            <h3 class="sp-card-title">
+                <?= sp_icon('gauge', '', 18) ?>
+                <span>Processing Queue</span>
+            </h3>
+            <button type="button" class="sp-btn sp-btn-ghost sp-btn-sm" id="clear-queue-btn" disabled>
+                <?= sp_icon('trash-2', '', 15) ?>
+                <span>Clear</span>
+            </button>
+        </div>
+
+        <div class="sp-metrics">
+            <div class="sp-metric">
+                <span class="sp-metric-label"><?= sp_icon('layers', '', 14) ?> Processed</span>
+                <span class="sp-metric-value" id="metric-count">0</span>
+            </div>
+            <div class="sp-metric">
+                <span class="sp-metric-label"><?= sp_icon('hard-drive', '', 14) ?> Saved</span>
+                <span class="sp-metric-value is-compact" id="metric-saved">&mdash;</span>
+            </div>
+            <div class="sp-metric">
+                <span class="sp-metric-label"><?= sp_icon('zap', '', 14) ?> Avg Speed</span>
+                <span class="sp-metric-value" id="metric-speed">&mdash;</span>
+            </div>
+        </div>
+
+        <div class="sp-empty" id="queue-empty">
+            <?= sp_icon('file-image', '', 28) ?>
+            <p style="font-weight: 500; color: var(--sp-text); margin-bottom: 4px;">No images queued yet</p>
+            <p class="sp-helper">Upload or drop files above to view actual compression savings, execution speed, and downloads.</p>
+        </div>
+
+        <div class="sp-queue" id="results-container" aria-live="polite"></div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-        <!-- Plan 1: ₹9 / month -->
-        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <div style="font-size: 18px; font-weight: 800; color: #FFF; margin-bottom: 4px;">Developer Starter</div>
-                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Ideal for indie hackers, small apps, and personal projects.</div>
-                <div style="font-size: 36px; font-weight: 900; color: var(--cyan); margin-bottom: 20px;">
-                    ₹9 <span style="font-size: 14px; color: var(--text-muted); font-weight: 600;">/ month</span>
-                </div>
-                <ul style="list-style: none; font-size: 13px; color: var(--text-secondary); line-height: 2; margin-bottom: 24px;">
-                    <li>✓ <strong>10,000</strong> image requests / month</li>
-                    <li>✓ Max <strong>15 MB</strong> per upload file</li>
-                    <li>✓ Universal format matrix (JPG, WebP, PNG)</li>
-                    <li>✓ Profile Avatar 1:1 auto-crop</li>
-                    <li>✓ Anti-shell & magic-byte protection</li>
-                </ul>
-            </div>
-            <a href="api-dashboard.php?plan=starter_9" class="nav-btn" style="display: block; text-align: center; text-decoration: none; padding: 12px;">Get Starter Key (₹9/mo)</a>
+    <div class="sp-glass">
+        <div class="sp-card-header">
+            <h3 class="sp-card-title">
+                <?= sp_icon('arrow-left-right', '', 18) ?>
+                <span>Visual Fidelity Comparison</span>
+            </h3>
+            <span class="sp-helper">Drag or use arrow keys</span>
         </div>
 
-        <!-- Plan 2: ₹49 / month (Featured) -->
-        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; border-color: rgba(0, 242, 254, 0.5); position: relative; overflow: hidden;">
-            <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #07090E; font-size: 10px; font-weight: 900; padding: 4px 16px; border-bottom-left-radius: 8px; text-transform: uppercase;">
-                MOST POPULAR
-            </div>
-            <div>
-                <div style="font-size: 18px; font-weight: 800; color: #FFF; margin-bottom: 4px;">Pro Enterprise</div>
-                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">For commercial platforms, startups, and high-growth services.</div>
-                <div style="font-size: 36px; font-weight: 900; color: var(--emerald); margin-bottom: 20px;">
-                    ₹49 <span style="font-size: 14px; color: var(--text-muted); font-weight: 600;">/ month</span>
-                </div>
-                <ul style="list-style: none; font-size: 13px; color: var(--text-secondary); line-height: 2; margin-bottom: 24px;">
-                    <li>✓ <strong>100,000</strong> image requests / month</li>
-                    <li>✓ Max <strong>35 MB</strong> per upload file</li>
-                    <li>✓ Sub-50ms priority execution queue</li>
-                    <li>✓ AVIF & WebP next-gen compression</li>
-                    <li>✓ Custom timestamp filename formats</li>
-                    <li>✓ Parallel batch upload support</li>
-                </ul>
-            </div>
-            <a href="api-dashboard.php?plan=pro_49" class="nav-btn" style="display: block; text-align: center; text-decoration: none; padding: 12px; background: linear-gradient(135deg, var(--emerald), #00b4d8);">Get Pro Key (₹49/mo)</a>
+        <div class="sp-compare-empty" id="compare-empty">
+            <?= sp_icon('eye', '', 28) ?>
+            <p style="font-weight: 500; color: var(--sp-text);">Ready to compare</p>
+            <p class="sp-helper">Compress an image to inspect original vs. optimized pixels side-by-side.</p>
         </div>
 
-        <!-- Plan 3: ScalePixel Dedicated Cloud -->
-        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <div style="font-size: 18px; font-weight: 800; color: #FFF; margin-bottom: 4px;">ScalePixel Dedicated Cloud</div>
-                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">For high-scale enterprise platforms and SaaS ecosystems.</div>
-                <div style="font-size: 36px; font-weight: 900; color: var(--purple); margin-bottom: 20px;">
-                    ₹199 <span style="font-size: 14px; color: var(--text-muted); font-weight: 600;">/ month</span>
-                </div>
-                <ul style="list-style: none; font-size: 13px; color: var(--text-secondary); line-height: 2; margin-bottom: 24px;">
-                    <li>✓ <strong>Unlimited</strong> compressions & conversions</li>
-                    <li>✓ Dedicated high-concurrency isolated memory queue</li>
-                    <li>✓ ScalePixel Client SDKs (PHP & TypeScript)</li>
-                    <li>✓ Zero persistent data footprint guarantee</li>
-                    <li>✓ 99.99% Uptime SLA & Dedicated Developer Support</li>
-                </ul>
+        <div class="sp-compare" id="compare-box" hidden>
+            <img id="after-img" src="" alt="ScalePixel compressed image">
+            <img id="before-img" src="" class="sp-compare-before" alt="Original uploaded image">
+            <span class="sp-image-label sp-image-label-left">
+                <strong>Original</strong>
+                <span id="compare-before-meta">&mdash;</span>
+            </span>
+            <span class="sp-image-label sp-image-label-right">
+                <strong>ScalePixel</strong>
+                <span id="compare-after-meta">&mdash;</span>
+            </span>
+            <div class="sp-compare-line" aria-hidden="true"></div>
+            <div class="sp-compare-handle" aria-hidden="true">
+                <?= sp_icon('arrow-left-right', '', 16) ?>
             </div>
-            <a href="api-dashboard.php?plan=dedicated" class="nav-btn" style="display: block; text-align: center; text-decoration: none; padding: 12px;">Deploy Dedicated Key ➔</a>
+            <input
+                type="range"
+                id="compare-range"
+                class="sp-compare-range"
+                min="5"
+                max="95"
+                value="50"
+                aria-label="Before and after comparison split percentage"
+            >
         </div>
     </div>
 </section>
 
-<!-- Features Grid -->
-<section class="features-grid">
-    <div class="feature-card">
-        <div class="feature-icon">👤</div>
-        <h3 class="feature-title">Human Face & Portrait Mode</h3>
-        <p class="feature-desc">
-            Engineered for profile avatars. Automatically centers faces, crops to a crisp 600×600 1:1 square, and generates timestamped names like <code>provider_19_2026-11-26_12-30.jpg</code>.
-        </p>
+<!-- Developer API Plans -->
+<section aria-labelledby="pricing-heading" id="pricing">
+    <div style="display: grid; gap: 6px; margin-bottom: 16px;">
+        <span class="sp-eyebrow"><?= sp_icon('key', '', 13) ?> Developer API Plans</span>
+        <h2 id="pricing-heading">Transparent developer pricing</h2>
+        <p style="color: var(--sp-text-secondary);">Instant API key activation from prototypes to dedicated enterprise throughput.</p>
     </div>
 
-    <div class="feature-card">
-        <div class="feature-icon">🔄</div>
-        <h3 class="feature-title">Universal Format Matrix</h3>
-        <p class="feature-desc">
-            Seamless any-to-any conversion between JPG, PNG, WebP, AVIF, GIF, BMP, and ICO with full alpha transparency preservation.
-        </p>
+    <div class="sp-grid-3">
+        <div class="sp-glass sp-pricing-card">
+            <div style="display: grid; gap: 14px;">
+                <div>
+                    <h4>Developer Starter</h4>
+                    <p class="sp-helper" style="margin-top: 4px;">Ideal for indie apps, prototypes, and personal tools.</p>
+                </div>
+                <div class="sp-price">&#8377;9 <span>/ month</span></div>
+                <ul class="sp-feature-list">
+                    <li><?= sp_icon('check', '', 16) ?><span><strong>10,000</strong> image requests / month</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Max <strong>15 MB</strong> per upload file</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Universal format matrix (JPG, WebP, PNG)</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Profile Avatar 1:1 auto-crop</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Anti-shell &amp; magic-byte protection</span></li>
+                </ul>
+            </div>
+            <a href="api-dashboard.php?plan=starter_9" class="sp-btn">Get Starter Key (&#8377;9/mo)</a>
+        </div>
+
+        <div class="sp-glass sp-pricing-card is-featured">
+            <div style="display: grid; gap: 14px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <h4>Pro Enterprise</h4>
+                    <span class="sp-badge sp-badge-accent">Popular</span>
+                </div>
+                <p class="sp-helper">For commercial platforms, startups, and high-growth apps.</p>
+                <div class="sp-price" style="color: var(--sp-accent);">&#8377;49 <span>/ month</span></div>
+                <ul class="sp-feature-list">
+                    <li><?= sp_icon('check', '', 16) ?><span><strong>100,000</strong> image requests / month</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Max <strong>35 MB</strong> per upload file</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Sub-50ms priority execution queue</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>AVIF &amp; WebP next-gen compression</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Custom timestamp filename formats</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Parallel batch upload support</span></li>
+                </ul>
+            </div>
+            <a href="api-dashboard.php?plan=pro_49" class="sp-btn sp-btn-primary">Get Pro Key (&#8377;49/mo)</a>
+        </div>
+
+        <div class="sp-glass sp-pricing-card">
+            <div style="display: grid; gap: 14px;">
+                <div>
+                    <h4>ScalePixel Dedicated Cloud</h4>
+                    <p class="sp-helper" style="margin-top: 4px;">For high-scale enterprise platforms and SaaS ecosystems.</p>
+                </div>
+                <div class="sp-price">&#8377;199 <span>/ month</span></div>
+                <ul class="sp-feature-list">
+                    <li><?= sp_icon('check', '', 16) ?><span><strong>Unlimited</strong> compressions &amp; conversions</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Dedicated isolated memory queue</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>PHP &amp; TypeScript Client SDKs</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>Zero persistent data footprint guarantee</span></li>
+                    <li><?= sp_icon('check', '', 16) ?><span>99.99% Uptime SLA &amp; Developer Support</span></li>
+                </ul>
+            </div>
+            <a href="api-dashboard.php?plan=dedicated" class="sp-btn">Deploy Dedicated Key</a>
+        </div>
+    </div>
+</section>
+
+<!-- Core Capabilities -->
+<section aria-labelledby="capabilities-heading">
+    <div style="display: grid; gap: 6px; margin-bottom: 16px;">
+        <h2 id="capabilities-heading">Engine capabilities</h2>
+        <p style="color: var(--sp-text-secondary);">Stateless, security-hardened media processing built for modern apps.</p>
     </div>
 
-    <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3 class="feature-title">Sub-80ms In-Memory Speed</h3>
-        <p class="feature-desc">
-            Processing happens purely in memory. Heavy 12 MP camera files are resized and quantized in under 80 milliseconds.
-        </p>
-    </div>
+    <div class="sp-grid-3">
+        <article class="sp-glass">
+            <div class="sp-card-header">
+                <h4 class="sp-card-title"><?= sp_icon('user', '', 18) ?><span>Face &amp; Portrait Mode</span></h4>
+            </div>
+            <p style="color: var(--sp-text-secondary);">Auto-crops avatars to a crisp 600&times;600 1:1 square and generates cache-busting filenames like <code>provider_19_2026-11-26_12-30.jpg</code>.</p>
+        </article>
 
-    <div class="feature-card">
-        <div class="feature-icon">🔑</div>
-        <h3 class="feature-title">Source Key & Secret Key APIs</h3>
-        <p class="feature-desc">
-            REST endpoints authenticated via Bearer tokens or HTTP headers for seamless backend and mobile app integration.
-        </p>
-    </div>
+        <article class="sp-glass">
+            <div class="sp-card-header">
+                <h4 class="sp-card-title"><?= sp_icon('refresh-cw', '', 18) ?><span>Universal Format Matrix</span></h4>
+            </div>
+            <p style="color: var(--sp-text-secondary);">Any-to-any transcoding across JPG, PNG, WebP, AVIF, GIF, BMP, and ICO with alpha transparency preservation.</p>
+        </article>
 
-    <div class="feature-card">
-        <div class="feature-icon">🛡️</div>
-        <h3 class="feature-title">0 Data Ephemeral Guarantee</h3>
-        <p class="feature-desc">
-            No permanent database or storage footprint. Uploaded assets are processed and automatically purged by our high-frequency cron.
-        </p>
-    </div>
+        <article class="sp-glass">
+            <div class="sp-card-header">
+                <h4 class="sp-card-title"><?= sp_icon('zap', '', 18) ?><span>In-Memory Speed</span></h4>
+            </div>
+            <p style="color: var(--sp-text-secondary);">High-speed truecolor resampling and quantization process high-resolution camera uploads in milliseconds.</p>
+        </article>
 
-    <div class="feature-card">
-        <div class="feature-icon">📱</div>
-        <h3 class="feature-title">ScalePixel Native SDKs</h3>
-        <p class="feature-desc">
-            Pre-built drop-in SDKs for PHP, Node.js, and React Native mobile applications.
-        </p>
+        <article class="sp-glass">
+            <div class="sp-card-header">
+                <h4 class="sp-card-title"><?= sp_icon('key', '', 18) ?><span>Dual-Key REST API</span></h4>
+            </div>
+            <p style="color: var(--sp-text-secondary);">Authenticate cleanly via <code>X-ScalePixel-Key</code> &amp; <code>X-ScalePixel-Secret</code> headers or Bearer tokens.</p>
+        </article>
+
+        <article class="sp-glass">
+            <div class="sp-card-header">
+                <h4 class="sp-card-title"><?= sp_icon('shield-check', '', 18) ?><span>Zero-Data Ephemeral</span></h4>
+            </div>
+            <p style="color: var(--sp-text-secondary);">No permanent asset storage. Files are validated against polyglot payloads and auto-purged within 60 minutes.</p>
+        </article>
+
+        <article class="sp-glass">
+            <div class="sp-card-header">
+                <h4 class="sp-card-title"><?= sp_icon('smartphone', '', 18) ?><span>Drop-In SDKs</span></h4>
+            </div>
+            <p style="color: var(--sp-text-secondary);">Ready-to-use client integrations for PHP backends, TypeScript web apps, and React Native mobile apps.</p>
+        </article>
     </div>
 </section>
 
 <!-- Benchmark Comparison Table -->
-<div class="studio-container" style="margin-top: 20px;">
-    <div class="glass-card">
-        <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 16px; text-align: center;">
-            Industry Benchmark Comparison
+<section class="sp-glass" aria-labelledby="benchmark-heading">
+    <div class="sp-card-header">
+        <h3 class="sp-card-title" id="benchmark-heading">
+            <?= sp_icon('layers', '', 18) ?>
+            <span>Industry Benchmark Comparison</span>
         </h3>
-        <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
-                <thead>
-                    <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--cyan);">
-                        <th style="padding: 12px 16px;">FEATURE</th>
-                        <th style="padding: 12px 16px;">SCALEPIXEL</th>
-                        <th style="padding: 12px 16px; color: var(--text-secondary);">TINYPNG</th>
-                        <th style="padding: 12px 16px; color: var(--text-secondary);">CLOUDINARY</th>
-                        <th style="padding: 12px 16px; color: var(--text-secondary);">CLOUDCONVERT</th>
-                    </tr>
-                </thead>
-                <tbody style="color: var(--text-secondary);">
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <td style="padding: 12px 16px; font-weight: 700; color: #FFF;">Face / Avatar Mode</td>
-                        <td style="padding: 12px 16px; color: var(--emerald); font-weight: 700;">✓ Native Auto-Crop</td>
-                        <td style="padding: 12px 16px;">✗ Manual only</td>
-                        <td style="padding: 12px 16px;">✓ Paid tier</td>
-                        <td style="padding: 12px 16px;">✗ Not supported</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <td style="padding: 12px 16px; font-weight: 700; color: #FFF;">Custom Date-Time Naming</td>
-                        <td style="padding: 12px 16px; color: var(--emerald); font-weight: 700;">✓ YYYY-MM-DD_HH-mm</td>
-                        <td style="padding: 12px 16px;">✗ Random hash</td>
-                        <td style="padding: 12px 16px;">✗ Public ID</td>
-                        <td style="padding: 12px 16px;">✗ Standard name</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <td style="padding: 12px 16px; font-weight: 700; color: #FFF;">Universal Any-to-Any Convert</td>
-                        <td style="padding: 12px 16px; color: var(--emerald); font-weight: 700;">✓ JPG, WebP, AVIF, PNG, ICO</td>
-                        <td style="padding: 12px 16px;">✗ JPG/PNG/WebP only</td>
-                        <td style="padding: 12px 16px;">✓ Complex syntax</td>
-                        <td style="padding: 12px 16px;">✓ Supported</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <td style="padding: 12px 16px; font-weight: 700; color: #FFF;">Zero-Data Ephemeral Privacy</td>
-                        <td style="padding: 12px 16px; color: var(--emerald); font-weight: 700;">✓ 0 Permanent Storage</td>
-                        <td style="padding: 12px 16px;">✓ 48 hr purge</td>
-                        <td style="padding: 12px 16px;">✗ Stored permanently</td>
-                        <td style="padding: 12px 16px;">✓ 24 hr purge</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 12px 16px; font-weight: 700; color: #FFF;">Self-Hosted / Own Cloud Freedom</td>
-                        <td style="padding: 12px 16px; color: var(--emerald); font-weight: 700;">✓ 100% Free Forever (AWS Lambda / PHP)</td>
-                        <td style="padding: 12px 16px;">✗ Paid subscriptions</td>
-                        <td style="padding: 12px 16px;">✗ \$89+/mo pricing</td>
-                        <td style="padding: 12px 16px;">✗ Credit-based billing</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
-</div>
+    <div class="sp-table-wrap">
+        <table class="sp-table">
+            <thead>
+                <tr>
+                    <th>FEATURE</th>
+                    <th style="color: var(--sp-accent);">SCALEPIXEL</th>
+                    <th>TINYPNG</th>
+                    <th>CLOUDINARY</th>
+                    <th>CLOUDCONVERT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-weight: 600; color: var(--sp-text);">Face / Avatar Mode</td>
+                    <td class="sp-state-success" style="font-weight: 600;">Native Auto-Crop</td>
+                    <td>Manual only</td>
+                    <td>Paid tier</td>
+                    <td>Not supported</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600; color: var(--sp-text);">Custom Date-Time Naming</td>
+                    <td class="sp-state-success" style="font-weight: 600;">YYYY-MM-DD_HH-mm</td>
+                    <td>Random hash</td>
+                    <td>Public ID</td>
+                    <td>Standard name</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600; color: var(--sp-text);">Universal Any-to-Any Convert</td>
+                    <td class="sp-state-success" style="font-weight: 600;">JPG, WebP, AVIF, PNG, ICO</td>
+                    <td>JPG/PNG/WebP only</td>
+                    <td>Complex syntax</td>
+                    <td>Supported</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600; color: var(--sp-text);">Zero-Data Ephemeral Privacy</td>
+                    <td class="sp-state-success" style="font-weight: 600;">0 Permanent Storage</td>
+                    <td>48 hr purge</td>
+                    <td>Stored permanently</td>
+                    <td>24 hr purge</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600; color: var(--sp-text);">Self-Hosted / Cloud Freedom</td>
+                    <td class="sp-state-success" style="font-weight: 600;">AWS Lambda / PHP Ready</td>
+                    <td>Paid subscriptions</td>
+                    <td>$89+/mo pricing</td>
+                    <td>Credit-based billing</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

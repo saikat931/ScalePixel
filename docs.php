@@ -1,101 +1,118 @@
 <?php
+require_once __DIR__ . '/includes/icons.php';
+
 $pageTitle = 'ScalePixel - REST API Documentation & Integration Guide';
 $activeNav = 'docs';
+$pageEyebrow = 'Developer Documentation';
+$pageHeading = 'REST API reference';
+$pageSubtitle = 'Integrate automated, sub-80ms image compression and universal format conversion into mobile apps, microservices, and web forms.';
+$headerActionsHtml = '<a href="api-dashboard.php" class="sp-btn sp-btn-primary">' . sp_icon('key', '', 16) . '<span>Manage API Keys</span></a>';
+
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div class="page-container" style="max-width: 1040px;">
-    <div class="hero-pill" style="margin-bottom: 8px;">Developer Documentation</div>
-    <h1 style="font-size: 36px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 12px;">ScalePixel REST API Reference</h1>
-    <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 40px;">
-        Integrate automated, sub-80ms image compression and universal format conversion into your mobile applications, backend microservices, or frontend forms.
+<!-- Navigation jump chips -->
+<nav class="sp-pill-row" style="justify-content: flex-start;" aria-label="Documentation sections">
+    <a href="#auth" class="sp-pill sp-pill-accent">1. Authentication</a>
+    <a href="#compress" class="sp-pill">2. /compress API</a>
+    <a href="#convert" class="sp-pill">3. /convert API</a>
+    <a href="#avatar-mode" class="sp-pill">4. Avatar Mode &amp; Naming</a>
+    <a href="#scalepixel-sdk" class="sp-pill">5. ScalePixel SDKs</a>
+</nav>
+
+<!-- 1. Authentication -->
+<section class="sp-glass" id="auth">
+    <div class="sp-card-header">
+        <h2 class="sp-card-title" style="font-size: 20px;">
+            <?= sp_icon('lock', '', 18) ?>
+            <span>1. API Authentication</span>
+        </h2>
+    </div>
+    <p style="color: var(--sp-text-secondary); margin-bottom: 16px;">
+        Every API request must include your ScalePixel credentials via HTTP headers or Bearer token authorization.
     </p>
 
-    <!-- Navigation jump chips -->
-    <div style="display: flex; gap: 10px; margin-bottom: 36px; flex-wrap: wrap;">
-        <a href="#auth" class="format-pill" style="text-decoration: none; padding: 6px 14px; font-size: 13px;">1. Authentication</a>
-        <a href="#compress" class="format-pill" style="text-decoration: none; padding: 6px 14px; font-size: 13px;">2. /compress API</a>
-        <a href="#convert" class="format-pill" style="text-decoration: none; padding: 6px 14px; font-size: 13px;">3. /convert API</a>
-        <a href="#avatar-mode" class="format-pill" style="text-decoration: none; padding: 6px 14px; font-size: 13px; color: var(--emerald); border-color: rgba(0,245,160,0.3);">4. Avatar Mode & Naming</a>
-        <a href="#scalepixel-sdk" class="format-pill" style="text-decoration: none; padding: 6px 14px; font-size: 13px; color: var(--cyan); border-color: rgba(0,242,254,0.3);">5. ScalePixel SDKs</a>
+    <h4>Method A: HTTP Headers (Recommended)</h4>
+    <div class="sp-code-wrap">
+        <pre class="sp-code" id="code-auth-headers">X-ScalePixel-Key: sp_live_pk_YOUR_API_KEY
+X-ScalePixel-Secret: sp_live_sk_YOUR_SECRET_KEY</pre>
+        <button type="button" class="sp-btn sp-btn-sm" data-copy-target="code-auth-headers" style="margin-top: 8px;">
+            <?= sp_icon('copy', '', 14) ?>
+            <span>Copy Headers</span>
+        </button>
     </div>
 
-    <!-- 1. Authentication -->
-    <div class="glass-card" id="auth" style="margin-bottom: 36px;">
-        <h2 style="color: var(--cyan); font-size: 20px; font-weight: 800; margin-bottom: 12px;">1. API Authentication</h2>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
-            Every request must include your ScalePixel credentials. You can pass them using custom HTTP headers, Bearer tokens, or form body parameters.
-        </p>
+    <h4 style="margin-top: 16px;">Method B: Bearer Token</h4>
+    <div class="sp-code-wrap">
+        <pre class="sp-code" id="code-auth-bearer">Authorization: Bearer sp_live_sk_YOUR_SECRET_KEY</pre>
+        <button type="button" class="sp-btn sp-btn-sm" data-copy-target="code-auth-bearer" style="margin-top: 8px;">
+            <?= sp_icon('copy', '', 14) ?>
+            <span>Copy Bearer Header</span>
+        </button>
+    </div>
+</section>
 
-        <h4 style="font-size: 13px; color: #FFF; text-transform: uppercase; margin-bottom: 8px;">Method A: HTTP Headers (Recommended)</h4>
-        <div class="code-block">
-X-ScalePixel-Key: sp_live_pk_YOUR_API_KEY
-X-ScalePixel-Secret: sp_live_sk_YOUR_SECRET_KEY
-        </div>
-
-        <h4 style="font-size: 13px; color: #FFF; text-transform: uppercase; margin-bottom: 8px;">Method B: Bearer Token</h4>
-        <div class="code-block">
-Authorization: Bearer sp_live_sk_YOUR_SECRET_KEY
+<!-- 2. POST /compress -->
+<section class="sp-glass" id="compress">
+    <div class="sp-card-header">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span class="sp-badge sp-badge-accent">POST</span>
+            <h2 style="font-size: 20px;"><code>/api/v1/compress.php</code></h2>
         </div>
     </div>
+    <p style="color: var(--sp-text-secondary); margin-bottom: 16px;">
+        Compresses, resizes, optimizes quality, and returns a lightweight download URL for any uploaded image.
+    </p>
 
-    <!-- 2. POST /compress -->
-    <div class="glass-card" id="compress" style="margin-bottom: 36px;">
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-            <span style="background: rgba(0,242,254,0.2); color: var(--cyan); padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 13px;">POST</span>
-            <code style="font-size: 16px; color: #FFF; font-weight: 700;">/api/v1/compress.php</code>
-        </div>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
-            Compresses, resizes, optimizes quality, and outputs a lightweight public URL for any image.
-        </p>
-
-        <h4 style="font-size: 13px; color: #FFF; text-transform: uppercase; margin-bottom: 8px;">Request Parameters (multipart/form-data)</h4>
-        <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+    <h4 style="margin-bottom: 10px;">Request Parameters (multipart/form-data)</h4>
+    <div class="sp-table-wrap" style="margin-bottom: 20px;">
+        <table class="sp-table">
             <thead>
-                <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-muted); text-align: left;">
-                    <th style="padding: 8px 12px;">PARAMETER</th>
-                    <th style="padding: 8px 12px;">TYPE</th>
-                    <th style="padding: 8px 12px;">DEFAULT</th>
-                    <th style="padding: 8px 12px;">DESCRIPTION</th>
+                <tr>
+                    <th>PARAMETER</th>
+                    <th>TYPE</th>
+                    <th>DEFAULT</th>
+                    <th>DESCRIPTION</th>
                 </tr>
             </thead>
-            <tbody style="color: var(--text-secondary);">
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <td style="padding: 10px 12px; color: var(--cyan); font-weight: 700;">file</td>
-                    <td style="padding: 10px 12px;">Binary File</td>
-                    <td style="padding: 10px 12px;">Required</td>
-                    <td style="padding: 10px 12px;">The raw image file to compress (JPEG, PNG, WebP, AVIF, GIF, BMP).</td>
-                </tr>
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <td style="padding: 10px 12px; color: var(--cyan); font-weight: 700;">mode</td>
-                    <td style="padding: 10px 12px;">string</td>
-                    <td style="padding: 10px 12px;">balanced</td>
-                    <td style="padding: 10px 12px;"><code>avatar</code> (600x600 JPEG), <code>showcase</code> (1080px WebP), <code>lossless</code>, <code>max</code>.</td>
-                </tr>
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <td style="padding: 10px 12px; color: var(--cyan); font-weight: 700;">prefix</td>
-                    <td style="padding: 10px 12px;">string</td>
-                    <td style="padding: 10px 12px;">media</td>
-                    <td style="padding: 10px 12px;">Filename prefix. E.g. <code>provider_19</code> generates <code>provider_19_2026-11-26_12-30.jpg</code>.</td>
-                </tr>
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <td style="padding: 10px 12px; color: var(--cyan); font-weight: 700;">quality</td>
-                    <td style="padding: 10px 12px;">integer</td>
-                    <td style="padding: 10px 12px;">80</td>
-                    <td style="padding: 10px 12px;">Compression quality from 1 to 100.</td>
+            <tbody>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">file</td>
+                    <td>Binary File</td>
+                    <td>Required</td>
+                    <td>Raw image file to compress (JPEG, PNG, WebP, AVIF, GIF, BMP).</td>
                 </tr>
                 <tr>
-                    <td style="padding: 10px 12px; color: var(--cyan); font-weight: 700;">format</td>
-                    <td style="padding: 10px 12px;">string</td>
-                    <td style="padding: 10px 12px;">auto</td>
-                    <td style="padding: 10px 12px;">Target output format: <code>jpeg</code>, <code>webp</code>, <code>avif</code>, <code>png</code>.</td>
+                    <td style="color: var(--sp-accent); font-weight: 600;">mode</td>
+                    <td>string</td>
+                    <td>balanced</td>
+                    <td><code>avatar</code> (600&times;600 JPEG), <code>showcase</code> (1920px WebP), <code>document</code>, <code>lossless</code>, <code>max</code>.</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">prefix</td>
+                    <td>string</td>
+                    <td>media</td>
+                    <td>Filename prefix. Example: <code>provider_19</code> generates <code>provider_19_2026-11-26_12-30-45.jpg</code>.</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">quality</td>
+                    <td>integer</td>
+                    <td>80</td>
+                    <td>Compression quality from 1 to 100.</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">format</td>
+                    <td>string</td>
+                    <td>auto</td>
+                    <td>Target output format: <code>jpeg</code>, <code>webp</code>, <code>avif</code>, <code>png</code>, <code>ico</code>.</td>
                 </tr>
             </tbody>
         </table>
+    </div>
 
-        <h4 style="font-size: 13px; color: #FFF; text-transform: uppercase; margin-bottom: 8px;">Sample JSON Response</h4>
-        <div class="code-block">
-{
+    <h4>Sample JSON Response</h4>
+    <div class="sp-code-wrap">
+        <pre class="sp-code" id="code-compress-json">{
   "status": "success",
   "message": "Image compressed and optimized successfully.",
   "data": {
@@ -111,48 +128,115 @@ Authorization: Bearer sp_live_sk_YOUR_SECRET_KEY
     "mode": "avatar",
     "execution_time_ms": 68.4
   }
-}
+}</pre>
+        <button type="button" class="sp-btn sp-btn-sm" data-copy-target="code-compress-json" style="margin-top: 8px;">
+            <?= sp_icon('copy', '', 14) ?>
+            <span>Copy JSON</span>
+        </button>
+    </div>
+</section>
+
+<!-- 3. POST /convert -->
+<section class="sp-glass" id="convert">
+    <div class="sp-card-header">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span class="sp-badge sp-badge-accent">POST</span>
+            <h2 style="font-size: 20px;"><code>/api/v1/convert.php</code></h2>
         </div>
     </div>
+    <p style="color: var(--sp-text-secondary); margin-bottom: 16px;">
+        Universal any-to-any image format converter across JPG, PNG, WebP, AVIF, GIF, BMP, and ICO.
+    </p>
 
-    <!-- 3. Avatar Mode Highlight -->
-    <div class="glass-card" id="avatar-mode" style="border-color: rgba(0, 245, 160, 0.4); margin-bottom: 36px;">
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-            <span style="font-size: 22px;">👤</span>
-            <h2 style="color: var(--emerald); font-size: 20px; font-weight: 800;">Human Face / Provider Avatar Mode</h2>
-        </div>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
-            By setting <code>mode: 'avatar'</code>, ScalePixel automatically enforces the exact specifications chosen for your service provider profile avatars:
-        </p>
-        <ul style="color: var(--text-secondary); font-size: 14px; padding-left: 20px; line-height: 1.8;">
-            <li><strong>Auto Aspect-Fill & Crop</strong>: Converts any wide landscape or tall portrait into a clean 1:1 square (600×600 px).</li>
-            <li><strong>Optimal Face JPEG Compression</strong>: Compresses with high-fidelity 80% JPEG, keeping skin tones sharp and natural while dropping file size to ~75 KB.</li>
-            <li><strong>Exact Timestamped Filename</strong>: Uses your chosen format <code>prefix_YYYY-MM-DD_HH-mm-ss.jpg</code> (e.g. <code>provider_19_2026-11-26_12-30-45.jpg</code>) for 100% cache-busting.</li>
-        </ul>
+    <div class="sp-table-wrap">
+        <table class="sp-table">
+            <thead>
+                <tr>
+                    <th>PARAMETER</th>
+                    <th>TYPE</th>
+                    <th>DEFAULT</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">file</td>
+                    <td>Binary File</td>
+                    <td>Required</td>
+                    <td>Source image uploaded via multipart/form-data.</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">to</td>
+                    <td>string</td>
+                    <td>webp</td>
+                    <td>Target format: <code>jpeg</code>, <code>png</code>, <code>webp</code>, <code>avif</code>, <code>gif</code>, <code>bmp</code>, <code>ico</code>.</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">quality</td>
+                    <td>integer</td>
+                    <td>85</td>
+                    <td>Output encoder quality from 1 to 100.</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--sp-accent); font-weight: 600;">prefix</td>
+                    <td>string</td>
+                    <td>source name</td>
+                    <td>Optional filename prefix for output naming.</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+</section>
 
-    <!-- 4. ScalePixel SDK Integration -->
-    <div class="glass-card" id="scalepixel-sdk" style="margin-bottom: 36px;">
-        <h2 style="color: var(--cyan); font-size: 20px; font-weight: 800; margin-bottom: 12px;">4. ScalePixel Client Integration SDKs</h2>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
-            Drop-in client libraries are pre-configured inside the <code>integrations/</code> folder for your apps and services:
-        </p>
+<!-- 4. Avatar Mode Highlight -->
+<section class="sp-glass" id="avatar-mode" style="border-color: rgba(169, 237, 69, 0.32);">
+    <div class="sp-card-header">
+        <h2 class="sp-card-title" style="font-size: 20px;">
+            <?= sp_icon('user', '', 18) ?>
+            <span>4. Human Face / Provider Avatar Mode</span>
+        </h2>
+    </div>
+    <p style="color: var(--sp-text-secondary); margin-bottom: 14px;">
+        Setting <code>mode: 'avatar'</code> applies the standardized specifications for service provider profile photos:
+    </p>
+    <ul class="sp-feature-list">
+        <li><?= sp_icon('check', '', 16) ?><span><strong>Auto Aspect-Fill &amp; Crop:</strong> Converts wide landscape or tall portrait photos into a clean 1:1 square (600&times;600 px).</span></li>
+        <li><?= sp_icon('check', '', 16) ?><span><strong>Optimal Face JPEG Compression:</strong> Encodes with high-fidelity 80% JPEG, preserving skin tones while shrinking payloads.</span></li>
+        <li><?= sp_icon('check', '', 16) ?><span><strong>Timestamped Filename:</strong> Generates <code>prefix_YYYY-MM-DD_HH-mm-ss.jpg</code> (e.g. <code>provider_19_2026-11-26_12-30-45.jpg</code>) for cache-busting.</span></li>
+    </ul>
+</section>
 
-        <h4 style="font-size: 13px; color: #FFF; text-transform: uppercase; margin-bottom: 8px;">React Native / Mobile App (TypeScript):</h4>
-        <div class="code-block">
-import { ScalePixelClient } from './integrations/ScalePixelClient';
+<!-- 5. ScalePixel SDK Integration -->
+<section class="sp-glass" id="scalepixel-sdk">
+    <div class="sp-card-header">
+        <h2 class="sp-card-title" style="font-size: 20px;">
+            <?= sp_icon('code-2', '', 18) ?>
+            <span>5. ScalePixel Client Integration SDKs</span>
+        </h2>
+    </div>
+    <p style="color: var(--sp-text-secondary); margin-bottom: 16px;">
+        Drop-in client libraries are available inside the <code>integrations/</code> directory:
+    </p>
+
+    <h4>React Native / Mobile App (TypeScript)</h4>
+    <div class="sp-code-wrap">
+        <pre class="sp-code" id="code-sdk-ts">import { ScalePixelClient } from './integrations/ScalePixelClient';
 
 const scalePixel = new ScalePixelClient('http://localhost/ScalePixel/api/v1');
 
-// Upload & compress Provider Avatar in 1 line:
+// Upload &amp; compress Provider Avatar in 1 line:
 const result = await scalePixel.compressAvatar(selectedPhotoUri, providerId);
 console.log('New Avatar URL:', result.data.download_url);
-console.log('Saved:', result.data.saved_percent + '%');
-        </div>
+console.log('Saved:', result.data.saved_percent + '%');</pre>
+        <button type="button" class="sp-btn sp-btn-sm" data-copy-target="code-sdk-ts" style="margin-top: 8px;">
+            <?= sp_icon('copy', '', 14) ?>
+            <span>Copy TypeScript</span>
+        </button>
+    </div>
 
-        <h4 style="font-size: 13px; color: #FFF; text-transform: uppercase; margin-bottom: 8px; margin-top: 16px;">PHP Backend / Web Server:</h4>
-        <div class="code-block">
-require_once 'integrations/ScalePixelClient.php';
+    <h4 style="margin-top: 20px;">PHP Backend / Web Server</h4>
+    <div class="sp-code-wrap">
+        <pre class="sp-code" id="code-sdk-php">require_once 'integrations/ScalePixelClient.php';
 
 $client = new ScalePixelClient();
 $result = $client->compressAvatar('/tmp/uploaded_photo.jpg', 19);
@@ -160,9 +244,12 @@ $result = $client->compressAvatar('/tmp/uploaded_photo.jpg', 19);
 if ($result['status'] === 'success') {
     $avatarUrl = $result['data']['download_url'];
     // Save $avatarUrl in MySQL providers table
-}
-        </div>
+}</pre>
+        <button type="button" class="sp-btn sp-btn-sm" data-copy-target="code-sdk-php" style="margin-top: 8px;">
+            <?= sp_icon('copy', '', 14) ?>
+            <span>Copy PHP</span>
+        </button>
     </div>
-</div>
+</section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
